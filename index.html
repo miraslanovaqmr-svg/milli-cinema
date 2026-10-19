@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milli Cinema</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #1e293b;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #f59e0b;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .container {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .player-box {
+            width: 100%;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            max-height: 250px;
+            display: block;
+        }
+        .add-section {
+            background-color: #1e293b;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, button {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+        input[type="text"] {
+            background-color: #334155;
+            color: #fff;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .file-label {
+            background-color: #3b82f6;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-add {
+            background-color: #10b981;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .playlist {
+            background-color: #1e293b;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .playlist h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #cbd5e1;
+        }
+        .video-item {
+            background-color: #334155;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .video-item span {
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        .play-btn {
+            background-color: #f59e0b;
+            color: black;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .fullscreen-btn {
+            background-color: #6366f1;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>🎬 Milli Cinema</header>
+
+    <div class="container">
+        <!-- Video Pleyer -->
+        <div class="player-box">
+            <video id="mainPlayer" controls playsinline></video>
+        </div>
+        <button class="fullscreen-btn" onclick="openFullscreen()">📐 Tam Ekran Et</button>
+
+        <!-- Video Əlavə Etmə BÖlməsi -->
+        <div class="add-section">
+            <h3>Video Əlavə Et</h3>
+            
+            <!-- Fayldan Seçmək -->
+            <label for="fileInput" class="file-label">📁 Telefona Bax və Video Seç</label>
+            <input type="file" id="fileInput" accept="video/*" onchange="addLocalVideo(event)">
+
+            <!-- Link ilə Seçmək -->
+            <input type="text" id="videoUrlInput" placeholder="Və ya Video Linki Qoyun (.mp4)">
+            <button class="btn-add" onclick="addUrlVideo()">Linkdən Əlavə Et</button>
+        </div>
+
+        <!-- Siyahı -->
+        <div class="playlist">
+            <h3>Videolarım</h3>
+            <div id="videoList"></div>
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById('mainPlayer');
+        const videoList = document.getElementById('videoList');
+
+        // Telefona yüklənmiş faylı oxumaq
+        function addLocalVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoURL = URL.createObjectURL(file);
+                createPlaylistItem(file.name, videoURL);
+                player.src = videoURL;
+                player.play();
+            }
+        }
+
+        // Link vasitəsilə video əlavə etmək
+        function addUrlVideo() {
+            const urlInput = document.getElementById('videoUrlInput');
+            const url = urlInput.value.trim();
+            if (url) {
+                const title = "Online Video " + (video
+      
